@@ -1,7 +1,11 @@
 package com.api.controledespesas.service;
 
 import com.api.controledespesas.domain.Conta;
+import com.api.controledespesas.exception.BadRequestException;
+import com.api.controledespesas.mapper.ContaMapper;
 import com.api.controledespesas.repository.ContaRepository;
+import com.api.controledespesas.request.ContaPostRequestBody;
+import com.api.controledespesas.request.ContaPutRequestBody;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,14 +24,14 @@ public class ContaService {
 
     public Conta findByIdOrThrowBadRequestException(long id) {
         return  contaRepository.findById(id)
-                .orElseThrow(() -> new BadRequestException("Anime Not Found"));
+                .orElseThrow(() -> new BadRequestException("Account not found"));
     }
 
 
     @Transactional
     public Conta save (ContaPostRequestBody contaPostRequestBody) {
 
-        return contaRepository.save(ContaMapper.INSTANCE.toConta(contaRepository) );
+        return contaRepository.save(ContaMapper.INSTANCE.toConta(contaPostRequestBody) );
 
     }
 
@@ -39,8 +43,8 @@ public class ContaService {
 
     public void replace (ContaPutRequestBody contaPutRequestBody) {
 
-        savedConta = findByIdOrThrowBadRequestException(contaPutRequestBody.getId());
-        Conta conta =  ContaMapper.INSTANCE.toCont(contaPutRequestBody);
+        Conta savedConta = findByIdOrThrowBadRequestException(contaPutRequestBody.getId());
+        Conta conta =  ContaMapper.INSTANCE.toConta(contaPutRequestBody);
         conta.setId(savedConta.getId());
         contaRepository.save(conta);
 
