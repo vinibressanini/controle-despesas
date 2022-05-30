@@ -18,7 +18,7 @@ public class ContaService {
 
     private final ContaRepository contaRepository;
 
-    public List<Conta> listAllNonPageable () {
+    public List<Conta> listAll () {
         return contaRepository.findAll();
     }
 
@@ -46,6 +46,7 @@ public class ContaService {
         Conta savedConta = findByIdOrThrowBadRequestException(contaPutRequestBody.getId());
         Conta conta =  ContaMapper.INSTANCE.toConta(contaPutRequestBody);
         conta.setId(savedConta.getId());
+        conta.setSaldo(savedConta.getSaldo());
         contaRepository.save(conta);
 
     }

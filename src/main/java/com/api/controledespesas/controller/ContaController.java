@@ -23,7 +23,7 @@ public class ContaController {
     @GetMapping(path = "/all")
     public ResponseEntity<List<Conta>> listAll(){
 
-        return ResponseEntity.ok(contaService.listAllNonPageable());
+        return ResponseEntity.ok(contaService.listAll());
 
     }
 
